@@ -26,5 +26,5 @@ require (
 	github.com/swaggo/swag v1.5.0
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/lint v0.0.0-20190409202823-959b441ac422 // indirect
-	golang.org/x/tools v0.0.0-20190425222832-ad9eeb80039a // indirect
+	golang.org/x/tools v0.0.0-20190521203540-521d6ed310dd // indirect
 )

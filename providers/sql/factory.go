@@ -9,8 +9,6 @@ import (
 
 	// to use postgresql
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	// _ "github.com/jinzhu/gorm/dialects/sqlite"
-	// _ "github.com/mattn/go-sqlite3"
 )
 
 var tables = []interface{}{
@@ -30,7 +28,6 @@ type (
 // NewStorage creates a storage factory
 func NewStorage(driver, url string) (f engine.StorageFactory, err error) {
 	db, err := gorm.Open(driver, url)
-	// db, err := gorm.Open(driver, url)
 	if err != nil {
 		return
 	}
@@ -50,7 +47,7 @@ func (f *factory) DropTables() {
 }
 
 func (f *factory) Migrate() {
-	// We shouldn't use AutoMigrate in production
+	// Don't use AutoMigrate in production
 	f.db.AutoMigrate(tables...)
 }
 

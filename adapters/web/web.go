@@ -10,6 +10,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"github.com/rs/cors"
 	"github.com/ttexan1/golang-simple/domain"
 	"github.com/ttexan1/golang-simple/engine"
 )
@@ -28,23 +29,18 @@ func NewAdapter(f engine.Factory, config *domain.Config) http.Handler {
 		return m
 	}
 	initDocs(m)
-	if config.IsSandbox() {
-		return m
-	}
-	return m
-	// handler := cors.New(cors.Options{
-	// 	AllowedOrigins: []string{"*"},
-	// 	AllowedMethods: []string{
-	// 		http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPut,
-	// 	},
-	// 	AllowedHeaders:   []string{"*"},
-	// 	AllowCredentials: true,
-	// 	ExposedHeaders: []string{
-	// 		"X-Total-Count",
-	// 	},
-	// }).Handler(m)
-	// fmt.Println("")
-	// return handler
+	handler := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{
+			http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPut,
+		},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+		ExposedHeaders: []string{
+			"X-Total-Count",
+		},
+	}).Handler(m)
+	return handler
 }
 
 func paginationHeaders(path string, query url.Values, count int) map[string]string {

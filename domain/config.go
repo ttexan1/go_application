@@ -9,13 +9,11 @@ import (
 
 // Config is the application config
 type Config struct {
-	AWSAccessKey    string
-	AWSAccessSecret string
-	Driver          string
-	Env             string
-	Port            string
-	PostgresURL     string
-	SessionSecret   string
+	Driver        string
+	Env           string
+	Port          string
+	PostgresURL   string
+	SessionSecret string
 }
 
 // NewConfig returns the config
@@ -25,21 +23,16 @@ func NewConfig(envPath string) (*Config, error) {
 		return nil, err
 	}
 	return &Config{
-		AWSAccessKey:    e.get("AWS_ACCESS_KEY", ""),
-		AWSAccessSecret: e.get("AWS_ACCESS_SECRET", ""),
-		Driver:          e.get("DB_DRIVER", "postgres"),
-		Env:             e.get("ENV", "development"),
-		Port:            e.get("PORT", ":9000"),
-		PostgresURL:     e.get("POSTGRES_URL", "host=localhost dbname=golang_practice_development sslmode=disable"),
-		SessionSecret:   e.get("SESSION_SECRET", "SUPER_SECRET"),
+		Driver:        e.get("DB_DRIVER", "postgres"),
+		Env:           e.get("ENV", "development"),
+		Port:          e.get("PORT", ":9000"),
+		PostgresURL:   e.get("POSTGRES_URL", "host=localhost dbname=golang_practice_development sslmode=disable"),
+		SessionSecret: e.get("SESSION_SECRET", "SUPER_SECRET"),
 	}, nil
 }
 
 // BaseURL returns the base url for the env
 func (c *Config) BaseURL() string {
-	if c.IsSandbox() {
-		return "http://golang-practice-sandbox"
-	}
 	if c.IsProd() {
 		return "http://golang-practice"
 	}
@@ -49,11 +42,6 @@ func (c *Config) BaseURL() string {
 // IsDevelopment returns whether the env is development or not
 func (c *Config) IsDevelopment() bool {
 	return c.Env == "development"
-}
-
-// IsSandbox returns whether the env is sandbox or not
-func (c *Config) IsSandbox() bool {
-	return c.Env == "sandbox"
 }
 
 // IsProd returns whether the env is prod or not

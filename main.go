@@ -27,12 +27,12 @@ func main() {
 		log.Fatal(err.Error())
 	}
 	defer s.Close()
-	if config.IsDevelopment() || config.IsSandbox() {
+	if config.IsDevelopment() {
 		s.Migrate()
 	}
 
 	e := engine.NewEngine(s)
 
-	log.Printf("Listening port %s ...\n", ":9000")
-	http.ListenAndServe("127.0.0.1:9000", web.NewAdapter(e, config))
+	log.Printf("Listening port %s ...\n", config.Port)
+	http.ListenAndServe(config.Port, web.NewAdapter(e, config))
 }
