@@ -11,6 +11,7 @@ import (
 type Config struct {
 	Driver        string
 	Env           string
+	JWTSigningKey string
 	Port          string
 	PostgresURL   string
 	SessionSecret string
@@ -25,6 +26,7 @@ func NewConfig(envPath string) (*Config, error) {
 	return &Config{
 		Driver:        e.get("DB_DRIVER", "postgres"),
 		Env:           e.get("ENV", "development"),
+		JWTSigningKey: e.get("JWT_SIGNING_KEY", "Development"),
 		Port:          e.get("PORT", ":9000"),
 		PostgresURL:   e.get("POSTGRES_URL", "host=localhost dbname=golang_practice_development sslmode=disable"),
 		SessionSecret: e.get("SESSION_SECRET", "SUPER_SECRET"),

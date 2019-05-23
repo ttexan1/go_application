@@ -63,10 +63,11 @@ func (c *writer) List(r *ListWritersRequest) *ListWritersResponse {
 type (
 	// CreateWriterRequest is the request
 	CreateWriterRequest struct {
-		Email  string  `json:"email"`
-		Name   string  `json:"name"`
-		Memo   *string `json:"memo"`
-		Status string  `json:"status"`
+		Email    string  `json:"email"`
+		Name     string  `json:"name"`
+		Memo     *string `json:"memo"`
+		Status   string  `json:"status"`
+		Password string  `json:"password"`
 	}
 	// CreateWriterResponse is the response
 	CreateWriterResponse struct {
@@ -82,6 +83,7 @@ func (c *writer) Create(r *CreateWriterRequest) *CreateWriterResponse {
 			Error: domain.NewError(http.StatusInternalServerError, err.Error()),
 		}
 	}
+	params.SetPassword(r.Password)
 	writer, err := c.repo.Create(&params)
 	return &CreateWriterResponse{
 		Writer: writer,
@@ -184,9 +186,7 @@ type (
 func (c *writer) Login(r *LoginWriterRequest) *LoginWriterResponse {
 	writer, err := c.repo.Find(domain.Writer{Email: r.Email})
 	if err != nil {
-		return &LoginWriterResponse{
-			Error: domain.NewError(http.StatusUnauthorized, "Invalid Credentials"),
-		}
+		return &LoginWriterResponse{Error: err}
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(writer.EncryptedPassword), []byte(r.Password)); err != nil {
 		return &LoginWriterResponse{
