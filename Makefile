@@ -13,6 +13,5 @@ assets-only:
 deploy: assets-only
 	GOOS=linux GOARCH=amd64 go build main.go
 	ssh golang-simple "rm -f ~/simple_server"
-	scp -i ~/.ssh/rails-practice.pem main ec2-user@13.230.110.106:~/simple_server
+	scp -i ~/.ssh/rails-practice.pem main golang-simple:~/simple_server
 	ssh golang-simple "./simple_server &"
-	# scp -r -i ~/.ssh/rails-practice.pem template ec2-user@13.230.110.106:~/app
