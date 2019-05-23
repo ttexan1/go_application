@@ -11,6 +11,7 @@ type (
 
 		NewArticleRepo() ArticleRepo
 		NewCategoryRepo() CategoryRepo
+		NewWriterRepo() WriterRepo
 	}
 
 	// ArticleRepo is the interface for the repo
@@ -28,6 +29,15 @@ type (
 		Create(*domain.Category) (*domain.Category, *domain.Error)
 		Find(int) (*domain.Category, *domain.Error)
 		Update(*domain.Category, *domain.Category) *domain.Error
+		Destroy(int) *domain.Error
+	}
+
+	// WriterRepo is the interface for the repo
+	WriterRepo interface {
+		List(*ListWritersRequest) ([]*domain.Writer, int, *domain.Error)
+		Create(*domain.Writer) (*domain.Writer, *domain.Error)
+		Find(int) (*domain.Writer, *domain.Error)
+		Update(*domain.Writer, *domain.Writer) *domain.Error
 		Destroy(int) *domain.Error
 	}
 )

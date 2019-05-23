@@ -8,6 +8,7 @@ type (
 	Factory interface {
 		NewCategory() Category
 		NewArticle() Article
+		NewWriter() Writer
 	}
 
 	factory struct {

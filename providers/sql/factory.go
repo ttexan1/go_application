@@ -12,6 +12,7 @@ import (
 )
 
 var tables = []interface{}{
+	&domain.Writer{},
 	&domain.Category{},
 	&domain.Article{},
 }
@@ -19,6 +20,7 @@ var tables = []interface{}{
 var tableNames = []string{
 	tblArticles,
 	tblCategories,
+	tblWriters,
 }
 
 type (
@@ -59,4 +61,7 @@ func (f *factory) NewArticleRepo() engine.ArticleRepo {
 
 func (f *factory) NewCategoryRepo() engine.CategoryRepo {
 	return newCategoryRepo(f.db)
+}
+func (f *factory) NewWriterRepo() engine.WriterRepo {
+	return newWriterRepo(f.db)
 }
