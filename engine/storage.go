@@ -36,7 +36,7 @@ type (
 	WriterRepo interface {
 		List(*ListWritersRequest) ([]*domain.Writer, int, *domain.Error)
 		Create(*domain.Writer) (*domain.Writer, *domain.Error)
-		Find(int) (*domain.Writer, *domain.Error)
+		Find(domain.Writer) (*domain.Writer, *domain.Error)
 		Update(*domain.Writer, *domain.Writer) *domain.Error
 		Destroy(int) *domain.Error
 	}

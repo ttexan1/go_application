@@ -2,6 +2,7 @@ package engine
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/jinzhu/copier"
 	"github.com/ttexan1/golang-simple/domain"
@@ -60,8 +61,14 @@ func (c *article) List(r *ListArticlesRequest) *ListArticlesResponse {
 type (
 	// CreateArticleRequest is the request
 	CreateArticleRequest struct {
-		DisplayOrder *int   `json:"display_order"`
-		Name         string `json:"name"`
+		CategoryID int `json:"category_id"`
+		WriterID   int `json:"writer_id"`
+
+		Description *string    `json:"description"`
+		ImageURL    *string    `json:"image_url"`
+		PublishAt   *time.Time `json:"publish_at"`
+		Status      string     `json:"status"`
+		Title       string     `json:"title"`
 	}
 	// CreateArticleResponse is the response
 	CreateArticleResponse struct {
@@ -111,9 +118,14 @@ func (c *article) Find(r *FindArticleRequest) *FindArticleResponse {
 type (
 	// UpdateArticleRequest is the request
 	UpdateArticleRequest struct {
-		ID           int     `json:"-"`
-		DisplayOrder *int    `json:"display_order"`
-		Name         *string `json:"name"`
+		ID         int `json:"-"`
+		CategoryID int `json:"category_id"`
+
+		Description *string    `json:"description"`
+		ImageURL    *string    `json:"image_url"`
+		PublishAt   *time.Time `json:"publish_at"`
+		Status      string     `json:"status"`
+		Title       string     `json:"title"`
 	}
 	// UpdateArticleResponse is the response
 	UpdateArticleResponse struct {
@@ -135,13 +147,10 @@ func (c *article) Update(r *UpdateArticleRequest) *UpdateArticleResponse {
 			Error: err,
 		}
 	}
-	if err = c.repo.Update(article, &params); err != nil {
-		return &UpdateArticleResponse{
-			Error: err,
-		}
-	}
+	err = c.repo.Update(article, &params)
 	return &UpdateArticleResponse{
 		Article: article,
+		Error:   err,
 	}
 }
 

@@ -35,11 +35,10 @@ func (r *writerRepo) List(params *engine.ListWritersRequest) (writers []*domain.
 	return
 }
 
-func (r *writerRepo) Find(id int) (writer *domain.Writer, err *domain.Error) {
+func (r *writerRepo) Find(cond domain.Writer) (writer *domain.Writer, err *domain.Error) {
 	writer = &domain.Writer{}
 	gormErr := r.db.Table(tblWriters).
-		Where(domain.Writer{ID: id}).
-		First(&writer).Error
+		Where(cond).First(&writer).Error
 
 	err = newErrorByGormError(gormErr)
 	return
@@ -51,7 +50,7 @@ func (r *writerRepo) Create(params *domain.Writer) (*domain.Writer, *domain.Erro
 			Create(&params).Error); err != nil {
 		return nil, err
 	}
-	return r.Find(params.ID)
+	return r.Find(domain.Writer{ID: params.ID})
 }
 
 func (r *writerRepo) Update(writer, params *domain.Writer) *domain.Error {

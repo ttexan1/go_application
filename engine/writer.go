@@ -2,15 +2,18 @@ package engine
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/jinzhu/copier"
 	"github.com/ttexan1/golang-simple/domain"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type (
 	// Writer interface defines methods to handle
 	// usecases related to writers.
 	Writer interface {
+		Login(*LoginWriterRequest) *LoginWriterResponse
 		List(*ListWritersRequest) *ListWritersResponse
 		Create(*CreateWriterRequest) *CreateWriterResponse
 		Find(*FindWriterRequest) *FindWriterResponse
@@ -60,8 +63,10 @@ func (c *writer) List(r *ListWritersRequest) *ListWritersResponse {
 type (
 	// CreateWriterRequest is the request
 	CreateWriterRequest struct {
-		DisplayOrder *int   `json:"display_order"`
-		Name         string `json:"name"`
+		Email  string  `json:"email"`
+		Name   string  `json:"name"`
+		Memo   *string `json:"memo"`
+		Status string  `json:"status"`
 	}
 	// CreateWriterResponse is the response
 	CreateWriterResponse struct {
@@ -97,7 +102,7 @@ type (
 )
 
 func (c *writer) Find(r *FindWriterRequest) *FindWriterResponse {
-	writer, err := c.repo.Find(r.ID)
+	writer, err := c.repo.Find(domain.Writer{ID: r.ID})
 	if err != nil {
 		return &FindWriterResponse{
 			Error: err,
@@ -129,19 +134,14 @@ func (c *writer) Update(r *UpdateWriterRequest) *UpdateWriterResponse {
 			Error: domain.NewError(http.StatusInternalServerError, err.Error()),
 		}
 	}
-	writer, err := c.repo.Find(r.ID)
+	writer, err := c.repo.Find(domain.Writer{ID: r.ID})
 	if err != nil {
-		return &UpdateWriterResponse{
-			Error: err,
-		}
+		return &UpdateWriterResponse{Error: err}
 	}
-	if err = c.repo.Update(writer, &params); err != nil {
-		return &UpdateWriterResponse{
-			Error: err,
-		}
-	}
+	err = c.repo.Update(writer, &params)
 	return &UpdateWriterResponse{
 		Writer: writer,
+		Error:  err,
 	}
 }
 
@@ -165,5 +165,38 @@ func (c *writer) Destroy(r *DestroyWriterRequest) *DestroyWriterResponse {
 	}
 	return &DestroyWriterResponse{
 		Error: nil,
+	}
+}
+
+type (
+	// LoginWriterRequest /writers/auth
+	LoginWriterRequest struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	// LoginWriterResponse /writers/auth
+	LoginWriterResponse struct {
+		Token string
+		Error *domain.Error
+	}
+)
+
+func (c *writer) Login(r *LoginWriterRequest) *LoginWriterResponse {
+	writer, err := c.repo.Find(domain.Writer{Email: r.Email})
+	if err != nil {
+		return &LoginWriterResponse{
+			Error: domain.NewError(http.StatusUnauthorized, "Invalid Credentials"),
+		}
+	}
+	if err := bcrypt.CompareHashAndPassword([]byte(writer.EncryptedPassword), []byte(r.Password)); err != nil {
+		return &LoginWriterResponse{
+			Error: domain.NewError(http.StatusUnauthorized, "Invalid Credentials"),
+		}
+	}
+
+	token, err := writer.CreateJWTToken(time.Now().Add(time.Hour * 24 * 7))
+	return &LoginWriterResponse{
+		Token: token,
+		Error: err,
 	}
 }

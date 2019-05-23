@@ -26,6 +26,8 @@ func initWriter(f engine.Factory, m *mux.Router) {
 	m.HandleFunc(domain.PathWriters+regexInt("id"), writer.updateHandler).Methods(http.MethodPut)
 	m.HandleFunc(domain.PathWriters+regexInt("id"), writer.destroyHandler).Methods(http.MethodDelete)
 
+	m.HandleFunc(domain.PathWriters+"/login", writer.loginHandler).Methods(http.MethodPost)
+
 }
 
 func (c *writer) listHandler(w http.ResponseWriter, r *http.Request) {
@@ -104,4 +106,21 @@ func (c *writer) destroyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	sendJSON(w, http.StatusNoContent, map[string]interface{}{}, noHeader)
+}
+
+func (c *writer) loginHandler(w http.ResponseWriter, r *http.Request) {
+	var req engine.LoginWriterRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		sendErrorJSON(w, domain.NewError(http.StatusBadRequest, err.Error()))
+		return
+	}
+	res := c.Login(&req)
+	if res.Error != nil {
+		sendErrorJSON(w, res.Error)
+		return
+	}
+	sendJSON(w, http.StatusOK, map[string]string{
+		"token": res.Token,
+	}, noHeader)
 }

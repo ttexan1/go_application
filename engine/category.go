@@ -135,13 +135,10 @@ func (c *category) Update(r *UpdateCategoryRequest) *UpdateCategoryResponse {
 			Error: err,
 		}
 	}
-	if err = c.repo.Update(category, &params); err != nil {
-		return &UpdateCategoryResponse{
-			Error: err,
-		}
-	}
+	err = c.repo.Update(category, &params)
 	return &UpdateCategoryResponse{
 		Category: category,
+		Error:    err,
 	}
 }
 
