@@ -13,9 +13,11 @@ import (
 
 var tables = []interface{}{
 	&domain.Category{},
+	&domain.Article{},
 }
 
 var tableNames = []string{
+	tblArticles,
 	tblCategories,
 }
 
@@ -49,6 +51,10 @@ func (f *factory) DropTables() {
 func (f *factory) Migrate() {
 	// Don't use AutoMigrate in production
 	f.db.AutoMigrate(tables...)
+}
+
+func (f *factory) NewArticleRepo() engine.ArticleRepo {
+	return newArticleRepo(f.db)
 }
 
 func (f *factory) NewCategoryRepo() engine.CategoryRepo {

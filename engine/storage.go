@@ -9,7 +9,17 @@ type (
 		DropTables()
 		Migrate()
 
+		NewArticleRepo() ArticleRepo
 		NewCategoryRepo() CategoryRepo
+	}
+
+	// ArticleRepo is the interface for the repo
+	ArticleRepo interface {
+		List(*ListArticlesRequest) ([]*domain.Article, int, *domain.Error)
+		Create(*domain.Article) (*domain.Article, *domain.Error)
+		Find(int) (*domain.Article, *domain.Error)
+		Update(*domain.Article, *domain.Article) *domain.Error
+		Destroy(int) *domain.Error
 	}
 
 	// CategoryRepo is the interface for the repo

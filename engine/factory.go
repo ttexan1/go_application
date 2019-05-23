@@ -7,6 +7,7 @@ type (
 	// they need to
 	Factory interface {
 		NewCategory() Category
+		NewArticle() Article
 	}
 
 	factory struct {
