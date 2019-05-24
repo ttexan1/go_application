@@ -23,11 +23,10 @@ func initWriter(f engine.Factory, m *mux.Router) {
 	m.HandleFunc(domain.PathWriters, writer.listHandler).Methods(http.MethodGet)
 	m.HandleFunc(domain.PathWriters, writer.createHandler).Methods(http.MethodPost)
 	m.HandleFunc(domain.PathWriters+regexInt("id"), writer.findHandler).Methods(http.MethodGet)
-	m.HandleFunc(domain.PathWriters+regexInt("id"), writer.updateHandler).Methods(http.MethodPut)
-	m.HandleFunc(domain.PathWriters+regexInt("id"), writer.destroyHandler).Methods(http.MethodDelete)
+	m.Handle(domain.PathWriters+regexInt("id"), withAuth(http.HandlerFunc(writer.updateHandler), true)).Methods(http.MethodPut)
+	m.Handle(domain.PathWriters+regexInt("id"), withAuth(http.HandlerFunc(writer.destroyHandler), true)).Methods(http.MethodDelete)
 
 	m.HandleFunc(domain.PathWritersLogin, writer.loginHandler).Methods(http.MethodPost)
-
 }
 
 func (c *writer) listHandler(w http.ResponseWriter, r *http.Request) {

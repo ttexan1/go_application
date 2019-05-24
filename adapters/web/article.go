@@ -21,11 +21,10 @@ func initArticle(f engine.Factory, m *mux.Router) {
 	}
 
 	m.HandleFunc(domain.PathArticles, article.listHandler).Methods(http.MethodGet)
-	m.HandleFunc(domain.PathArticles, article.createHandler).Methods(http.MethodPost)
+	m.Handle(domain.PathArticles, withAuth(http.HandlerFunc(article.createHandler), true)).Methods(http.MethodPost)
 	m.HandleFunc(domain.PathArticles+regexInt("id"), article.findHandler).Methods(http.MethodGet)
-	m.HandleFunc(domain.PathArticles+regexInt("id"), article.updateHandler).Methods(http.MethodPut)
-	m.HandleFunc(domain.PathArticles+regexInt("id"), article.destroyHandler).Methods(http.MethodDelete)
-
+	m.Handle(domain.PathArticles+regexInt("id"), withAuth(http.HandlerFunc(article.updateHandler), true)).Methods(http.MethodPut)
+	m.Handle(domain.PathArticles+regexInt("id"), withAuth(http.HandlerFunc(article.destroyHandler), true)).Methods(http.MethodDelete)
 }
 
 func (c *article) listHandler(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +48,8 @@ func (c *article) createHandler(w http.ResponseWriter, r *http.Request) {
 		sendErrorJSON(w, domain.NewError(http.StatusBadRequest, err.Error()))
 		return
 	}
+	claims, _ := r.Context().Value(ctxClaims).(*domain.JWTClaims)
+	req.WriterClaims = claims
 	res := c.Create(&req)
 	if res.Error != nil {
 		sendErrorJSON(w, res.Error)

@@ -69,6 +69,8 @@ type (
 		PublishAt   *time.Time `json:"publish_at"`
 		Status      string     `json:"status"`
 		Title       string     `json:"title"`
+
+		WriterClaims *domain.JWTClaims `json:"-"`
 	}
 	// CreateArticleResponse is the response
 	CreateArticleResponse struct {
@@ -84,6 +86,7 @@ func (c *article) Create(r *CreateArticleRequest) *CreateArticleResponse {
 			Error: domain.NewError(http.StatusInternalServerError, err.Error()),
 		}
 	}
+	params.WriterID = r.WriterClaims.WriterID
 	article, err := c.repo.Create(&params)
 	return &CreateArticleResponse{
 		Article: article,

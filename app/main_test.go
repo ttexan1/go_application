@@ -108,7 +108,6 @@ func (t *e2etest) run() {
 		"category_id": category.ID,
 		"status":      domain.ArticleStatusDraft,
 		"title":       "this article is awesome",
-		"writer_id":   1,
 	}, adminToken).checkStatus(http.StatusCreated).decode(&article)
 	assert.Equal(t, domain.ArticleStatusDraft, article.Status)
 }
