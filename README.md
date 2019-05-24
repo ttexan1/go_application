@@ -16,3 +16,19 @@ $ createdb golang_practice_development
 ```
 $ make deploy
 ```
+
+## Run
+```
+$ go run app/main.go
+```
+
+## Example
+```
+$ curl http://localhost:9000/categories -X POST -d '{"name": "category", "display_order": 1}'
+```
+
+## Test
+
+```
+$ make test
+```

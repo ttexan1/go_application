@@ -15,3 +15,6 @@ deploy: assets-only
 	ssh golang-simple "rm -f ~/simple_server"
 	scp -i ~/.ssh/rails-practice.pem main golang-simple:~/simple_server
 	ssh golang-simple "./simple_server &"
+
+test:
+	go test ./...
