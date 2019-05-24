@@ -8,3 +8,6 @@ const PathCategories = "/categories"
 
 // PathWriters is the root path for all Writers APIs.
 const PathWriters = "/writers"
+
+// PathWritersLogin is the root path for all Writers APIs.
+const PathWritersLogin = PathWriters + "/login"

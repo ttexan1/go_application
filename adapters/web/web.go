@@ -24,7 +24,9 @@ func NewAdapter(f engine.Factory, config *domain.Config) http.Handler {
 	store = sessions.NewCookieStore([]byte(config.SessionSecret))
 	baseURL = config.BaseURL()
 	m := mux.NewRouter()
+	initArticle(f, m)
 	initCategory(f, m)
+	initWriter(f, m)
 	if config.IsProd() {
 		return m
 	}

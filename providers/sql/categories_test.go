@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/suite"
 	"github.com/ttexan1/golang-simple/domain"
 	"github.com/ttexan1/golang-simple/engine"
-	"github.com/ttexan1/golang-simple/providers/sql/testseed"
+	"github.com/ttexan1/golang-simple/providers/sql/testdata"
 )
 
 type CategorySuite struct {
@@ -17,7 +17,7 @@ type CategorySuite struct {
 func (s *CategorySuite) SetupTest() {
 	cleaner.Acquire(tableNames...)
 	s.repo = newCategoryRepo(s.db)
-	for _, c := range testseed.Categories {
+	for _, c := range testdata.Categories {
 		_, err := s.repo.Create(c)
 		s.Require().Nil(err)
 	}
@@ -36,8 +36,8 @@ func (s *CategorySuite) TestDestroy() {
 func (s *CategorySuite) TestList() {
 	list, count, err := s.repo.List(&engine.ListCategoriesRequest{})
 	s.Nil(err)
-	s.Equal(len(testseed.Categories), len(list))
-	s.Equal(len(testseed.Categories), count)
+	s.Equal(len(testdata.Categories), len(list))
+	s.Equal(len(testdata.Categories), count)
 }
 
 func (s *CategorySuite) TestListLimit() {
@@ -46,7 +46,7 @@ func (s *CategorySuite) TestListLimit() {
 	})
 	s.Nil(err)
 	s.Equal(1, len(list))
-	s.Equal(len(testseed.Categories), count)
+	s.Equal(len(testdata.Categories), count)
 }
 
 func (s *CategorySuite) TestListSort() {
@@ -54,8 +54,8 @@ func (s *CategorySuite) TestListSort() {
 		Sort: "id",
 	})
 	s.Nil(err)
-	s.Equal(len(testseed.Categories), len(list))
-	s.Equal(len(testseed.Categories), count)
+	s.Equal(len(testdata.Categories), len(list))
+	s.Equal(len(testdata.Categories), count)
 }
 
 func (s *CategorySuite) TestListOffset() {
@@ -64,7 +64,7 @@ func (s *CategorySuite) TestListOffset() {
 	})
 	s.Nil(err)
 	s.Equal(2, len(list))
-	s.Equal(len(testseed.Categories), count)
+	s.Equal(len(testdata.Categories), count)
 }
 
 func (s *CategorySuite) TestFind() {
@@ -73,10 +73,10 @@ func (s *CategorySuite) TestFind() {
 }
 
 func (s *CategorySuite) TestUpdate() {
-	err := s.repo.Update(testseed.Categories[0], &domain.Category{
+	err := s.repo.Update(testdata.Categories[0], &domain.Category{
 		ID:   1,
 		Name: "updated",
 	})
 	s.Nil(err)
-	s.Equal("updated", testseed.Categories[0].Name)
+	s.Equal("updated", testdata.Categories[0].Name)
 }

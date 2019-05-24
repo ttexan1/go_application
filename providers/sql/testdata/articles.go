@@ -1,4 +1,4 @@
-package testseed
+package testdata
 
 import (
 	"time"

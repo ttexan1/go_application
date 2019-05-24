@@ -1,4 +1,4 @@
-package testseed
+package testdata
 
 import "github.com/ttexan1/golang-simple/domain"
 

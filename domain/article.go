@@ -20,7 +20,6 @@ type Article struct {
 	Title       string     `json:"title" valid:"required,runelength(15|48)"`
 
 	Category *Category `json:"category"`
-	// Writer          *Writer           `json:"writer"`
 }
 
 // article statuses

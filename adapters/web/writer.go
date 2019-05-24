@@ -26,7 +26,7 @@ func initWriter(f engine.Factory, m *mux.Router) {
 	m.HandleFunc(domain.PathWriters+regexInt("id"), writer.updateHandler).Methods(http.MethodPut)
 	m.HandleFunc(domain.PathWriters+regexInt("id"), writer.destroyHandler).Methods(http.MethodDelete)
 
-	m.HandleFunc(domain.PathWriters+"/login", writer.loginHandler).Methods(http.MethodPost)
+	m.HandleFunc(domain.PathWritersLogin, writer.loginHandler).Methods(http.MethodPost)
 
 }
 
