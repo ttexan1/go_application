@@ -28,6 +28,6 @@ require (
 	github.com/swaggo/swag v1.5.0
 	golang.org/x/build v0.0.0-20190314133821-5284462c4bec // indirect
 	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
-	golang.org/x/tools v0.0.0-20190521203540-521d6ed310dd // indirect
+	golang.org/x/tools v0.0.0-20190523174634-38d8bcfa38af // indirect
 	gopkg.in/khaiql/dbcleaner.v2 v2.3.0
 )

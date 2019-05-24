@@ -39,17 +39,6 @@ func TestMain(t *testing.T) {
 	s.DropTables()
 	s.Migrate()
 
-	w := &domain.Writer{
-		Email:  normalEmail,
-		Status: domain.WriterStatusValid,
-		Name:   "てつじ",
-	}
-	w.SetPassword(normalPassword)
-	_, derr := s.NewWriterRepo().Create(w)
-	if derr != nil {
-		t.Fatal(derr)
-	}
-
 	e := engine.NewEngine(s)
 
 	go func() {
@@ -69,21 +58,31 @@ type e2etest struct {
 }
 
 func (t *e2etest) run() {
-	// First log them in.
-	adminToken := t.login(domain.PathWritersLogin, map[string]interface{}{
+	// make writer
+	writer := domain.Writer{}
+	t.doRequest(http.MethodPost, domain.PathWriters, map[string]string{
+		"email":    normalEmail,
+		"status":   domain.WriterStatusValid,
+		"name":     "てつじ",
+		"password": normalPassword,
+	}, "").checkStatus(http.StatusCreated).decode(&writer)
+	assert.Equal(t, "てつじ", writer.Name)
+
+	// log in.
+	token := t.login(domain.PathWritersLogin, map[string]interface{}{
 		"email":    normalEmail,
 		"password": normalPassword,
 	})
 
-	// create a category
+	// create categories
 	category := domain.Category{}
 	t.doRequest(http.MethodPost, domain.PathCategories, map[string]string{
 		"name": "category",
-	}, adminToken).checkStatus(http.StatusCreated).decode(&category)
+	}, token).checkStatus(http.StatusCreated).decode(&category)
 	for i := 1; i < 21; i++ {
 		t.doRequest(http.MethodPost, domain.PathCategories, map[string]string{
 			"name": fmt.Sprintf("category%d", i),
-		}, adminToken).checkStatus(http.StatusCreated)
+		}, token).checkStatus(http.StatusCreated)
 	}
 
 	// list categories
@@ -108,7 +107,7 @@ func (t *e2etest) run() {
 		"category_id": category.ID,
 		"status":      domain.ArticleStatusDraft,
 		"title":       "this article is awesome",
-	}, adminToken).checkStatus(http.StatusCreated).decode(&article)
+	}, token).checkStatus(http.StatusCreated).decode(&article)
 	assert.Equal(t, domain.ArticleStatusDraft, article.Status)
 }
 
