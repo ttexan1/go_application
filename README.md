@@ -7,6 +7,9 @@ Golang Simple Clean Architecture Application
 
 ```
 $ createdb golang_practice_development
+$ createdb golang_practice_test
+$ createdb golang_practice_e2etest
+
 ```
 
 ## Deploy
@@ -32,3 +35,7 @@ $ curl http://localhost:9000/categories -X POST -d '{"name": "category", "displa
 ```
 $ make test
 ```
+
+## Contents
+
+* 簡単なブログアプリケーションのバックエンドAPIをクリーンアーキテクチャで実装してみました。`Article` `Writer` `Category` の三種類のモデルで設計を意識して書きました。
