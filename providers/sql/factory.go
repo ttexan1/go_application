@@ -2,8 +2,8 @@ package sql
 
 import (
 	"github.com/jinzhu/gorm"
-
 	"github.com/scoville/validations"
+
 	"github.com/ttexan1/golang-simple/domain"
 	"github.com/ttexan1/golang-simple/engine"
 
@@ -58,7 +58,6 @@ func (f *factory) Migrate() {
 func (f *factory) NewArticleRepo() engine.ArticleRepo {
 	return newArticleRepo(f.db)
 }
-
 func (f *factory) NewCategoryRepo() engine.CategoryRepo {
 	return newCategoryRepo(f.db)
 }

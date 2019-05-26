@@ -9,9 +9,9 @@ import (
 // Articles are the seed data
 var Articles = []*domain.Article{
 	&domain.Article{
-		ID: 1,
-		// CategoryID:  Categories[0].ID,
-		// WriterID:    Writers[0].ID,
+		ID:          1,
+		CategoryID:  Categories[0].ID,
+		WriterID:    Writers[0].ID,
 		Description: domain.PtrString("friend"),
 		ImageURL:    domain.PtrString("http://image.org"),
 		PublishAt:   domain.PtrTime(time.Now().Add(time.Hour * time.Duration(0))),
@@ -19,9 +19,9 @@ var Articles = []*domain.Article{
 		Title:       "This is one of the greatest article",
 	},
 	&domain.Article{
-		ID: 2,
-		// CategoryID:  Categories[0].ID,
-		// WriterID:    Writers[0].ID,
+		ID:          2,
+		CategoryID:  Categories[0].ID,
+		WriterID:    Writers[0].ID,
 		Description: domain.PtrString("friend"),
 		ImageURL:    domain.PtrString("http://image.org"),
 		PublishAt:   domain.PtrTime(time.Now().Add(time.Hour * time.Duration(1))),
@@ -29,9 +29,9 @@ var Articles = []*domain.Article{
 		Title:       "This is great article",
 	},
 	&domain.Article{
-		ID: 3,
-		// CategoryID:  Categories[0].ID,
-		// WriterID:    Writers[0].ID,
+		ID:          3,
+		CategoryID:  Categories[1].ID,
+		WriterID:    Writers[1].ID,
 		Description: domain.PtrString("friend"),
 		ImageURL:    domain.PtrString("http://image.org"),
 		PublishAt:   domain.PtrTime(time.Now().Add(time.Hour * time.Duration(2))),

@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/alexflint/go-filemutex v0.0.0-20171028004239-d358565f3c3f // indirect
+	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/form v3.1.4+incompatible
 	github.com/gorilla/mux v1.7.2

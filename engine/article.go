@@ -36,6 +36,16 @@ type (
 		Limit  int    `form:"limit"`
 		Offset int    `form:"offset"`
 		Sort   string `form:"sort"`
+
+		CategoryID int `form:"category_id"`
+		WriterID   int `form:"writer_id"`
+
+		Description   *string    `form:"description"`
+		ImageURL      *string    `form:"image_url"`
+		PublishAtGteq *time.Time `form:"publish_at_gteq"`
+		PublishAtLteq *time.Time `form:"publish_at_lteq"`
+		Statuses      []string   `form:"statuses"`
+		Title         string     `form:"title"`
 	}
 	// ListArticlesResponse is the response
 	ListArticlesResponse struct {

@@ -19,6 +19,7 @@ func (s *CategorySuite) SetupTest() {
 	s.repo = newCategoryRepo(s.db)
 	for _, c := range testdata.Categories {
 		_, err := s.repo.Create(c)
+
 		s.Require().Nil(err)
 	}
 }
