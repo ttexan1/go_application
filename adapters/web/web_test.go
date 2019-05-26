@@ -15,7 +15,7 @@ type testFactory struct{}
 
 func (f *testFactory) NewCategory() engine.Category { return &testCategoryEngine{} }
 func (f *testFactory) NewArticle() engine.Article   { return &testArticleEngine{} }
-func (f *testFactory) NewWriter() engine.Writer     { return nil }
+func (f *testFactory) NewWriter() engine.Writer     { return &testWriterEngine{} }
 
 type webSuite struct {
 	suite.Suite
