@@ -27,7 +27,7 @@ func TestMain(t *testing.T) {
 	require.NoError(t, err)
 	domain.JWTSigningKey = "test"
 	config.Port = ":8081"
-	config.PostgresURL = "host=localhost dbname=golang_practice_test sslmode=disable"
+	config.PostgresURL = "host=localhost dbname=golang_practice_e2etest sslmode=disable"
 	if dbURL := os.Getenv("TEST_DB_URL"); dbURL != "" {
 		config.PostgresURL = dbURL
 	}
